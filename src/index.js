@@ -15,7 +15,11 @@ const DIRECTORY = path.join(
 
 const server = express();
 
-server.use(cors());
+server.use(
+  cors({
+    exposedHeaders: ["Access-Control-Allow-Origin"],
+  })
+);
 server.use(express.static(DIRECTORY));
 
 server.delete("/:collection/:hash/:filename?", async (req, res) => {
