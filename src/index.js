@@ -28,7 +28,7 @@ server.delete("/:collection/:hash/:filename?", async (req, res) => {
   const filepath = path.join(DIRECTORY, collection, hash, filename);
 
   try {
-    await rm(filepath, { force: true });
+    await rm(filepath);
 
     message.success = true;
 
