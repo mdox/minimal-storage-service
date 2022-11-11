@@ -18,21 +18,26 @@ const server = express();
 server.use(cors());
 server.use(express.static(DIRECTORY));
 
-server.delete("/:collection/:hash/:filename", async (req, res) => {
+server.delete("/:collection/:hash/:filename?", async (req, res) => {
   const message = { success: false };
 
-  try {
-    const filepath = path.join(
-      DIRECTORY,
-      req.params.collection,
-      req.params.hash,
-      req.params.filename
-    );
+  const collection = req.params.filename ? req.params.collection : "";
+  const hash = req.params.filename ? req.params.hash : req.params.collection;
+  const filename = req.params.filename ? req.params.filename : req.params.hash;
 
+  const filepath = path.join(DIRECTORY, collection, hash, filename);
+
+  try {
     await rm(filepath, { force: true });
-    await rmdir(path.dirname(filepath));
 
     message.success = true;
+
+    try {
+      await rmdir(path.join(filepath, ".."));
+      if (collection) {
+        await rmdir(path.join(filepath, "../.."));
+      }
+    } catch (_) {}
   } catch (e) {
     res.status(500);
   }
@@ -40,7 +45,7 @@ server.delete("/:collection/:hash/:filename", async (req, res) => {
   res.json(message);
 });
 
-server.post("/:collection", async (req, res) => {
+server.post("/:collection?", async (req, res) => {
   const collection = req.params.collection ?? "";
   const collectionDir = path.join(DIRECTORY, collection);
 

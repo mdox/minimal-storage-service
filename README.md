@@ -5,6 +5,7 @@ Minimal storage service in NodeJS (JavaScript).
 ## Routes
 
 ```txt
+POST /
 POST /:collection
 # Response on Success: { success: true, url: "/<collection>/<hash>/<filename>" }
 # Response on Failure: { success: false, url: "" }
@@ -16,6 +17,7 @@ GET /:collection/:hash/:filename
 ```
 
 ```txt
+DELETE /:hash/:filename
 DELETE /:collection/:hash/:filename
 # Response on Success: { success: true }
 # Response on Failure: { success: false }
