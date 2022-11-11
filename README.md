@@ -2,6 +2,10 @@
 
 Minimal storage service in NodeJS (JavaScript).
 
+## Docker Image
+
+`mardox/minimal-storage-service:1.0`
+
 ## Routes
 
 ```txt
